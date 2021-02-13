@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       mainMap: null,
-      initialCoordinates: [-47, -15],
+      initialCoordinates: [-47, -15]
     };
   },
   mounted() {
@@ -29,15 +29,10 @@ export default {
     myMap() {
       useGeographic();
 
-      this.mainMap = new Map({
+    this.mainMap = new Map({
         layers: [
           new TileLayer({
             source: new OSM(),
-          }),
-          new VectorLayer({
-            source: new VectorSource({
-              features: [new Feature(new Point(this.initialCoordinates))],
-            }),
           }),
         ],
         target: "map",
@@ -46,6 +41,13 @@ export default {
           zoom: 12,
         }),
       });
+    
+      const source = new VectorSource();
+      source.addFeatures([new Feature(new Point(this.initialCoordinates))]);
+      const layer = new VectorLayer({
+        source: source,
+      });
+      this.mainMap.addLayer(layer);
 
       setTimeout(() => {
         this.mainMap.updateSize();
